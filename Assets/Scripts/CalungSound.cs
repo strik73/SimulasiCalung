@@ -65,21 +65,21 @@ public class CalungSound : MonoBehaviour
     }
 
     IEnumerator GlowPart(GameObject part, Color glowColor, float intensity)
+{
+    Renderer rend = part.GetComponent<Renderer>();
+    if (rend != null)
     {
-        Renderer rend = part.GetComponent<Renderer>();
-        if (rend != null)
-        {
-            Material mat = rend.material;
+        Material mat = rend.material; // Ensure it's an instance
+        mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+        mat.EnableKeyword("_EMISSION");
+        mat.SetColor("_EmissionColor", glowColor * intensity);
+        DynamicGI.SetEmissive(rend, glowColor * intensity); // Ensure update
 
-            // Enable emission and set glow color
-            mat.EnableKeyword("_EMISSION");
-            mat.SetColor("_EmissionColor", glowColor * intensity);
+        yield return new WaitForSeconds(0.2f);
 
-            // Wait for a short duration
-            yield return new WaitForSeconds(0.2f);
-
-            // Disable emission
-            mat.DisableKeyword("_EMISSION");
-        }
+        mat.DisableKeyword("_EMISSION");
+        mat.SetColor("_EmissionColor", Color.black);
     }
+}
+
 }

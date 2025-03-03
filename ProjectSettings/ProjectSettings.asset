@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: Yefta
   productName: Simulasi Calung
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -141,7 +141,9 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -6408592209973857936, guid: d27ff3918a8d1a64cbf8e6ef0ecf446a, type: 2}
+  - {fileID: 11400000, guid: 1709c6ccaf251b742a9018aae674a764, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -162,7 +164,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.SimulasiCalung
+    Android: com.Yefta.SimulasiCalung
     Standalone: com.DefaultCompany.Simulasi-Calung
   buildNumber:
     Standalone: 0
@@ -261,7 +263,7 @@ PlayerSettings:
   useCustomGradlePropertiesTemplate: 0
   useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 1
+  AndroidTargetArchitectures: 3
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -861,7 +863,7 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 2
+  activeInputHandler: 0
   windowsGamepadBackendHint: 0
   cloudProjectId: 3d597fa2-07fb-4837-a8ab-b33ff3e79b64
   framebufferDepthMemorylessMode: 0
