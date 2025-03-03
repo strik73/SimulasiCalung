@@ -14,6 +14,11 @@ public class MainMenu : MonoBehaviour
     StartCoroutine(LoadSceneAsync("Simulasi"));
    }
 
+   public void Informasi()
+   {
+    StartCoroutine(LoadSceneAsync("Informasi"));
+   }
+
    public void Quit()
    {
     Application.Quit();
