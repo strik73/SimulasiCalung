@@ -9,17 +9,33 @@ public class CalungSound : MonoBehaviour
         public string name;
         public AudioClip sound;
         public GameObject part;
-        public Color glowColor = Color.yellow; // Glow color
-        public float glowIntensity = 5f; // Intensity of the glow
+        public Renderer partRenderer;
+        public Material originalMaterial;
     }
 
     public CalungPart[] calungParts = new CalungPart[14];
     private AudioSource audioSource;
+    public Color glowColor = Color.white;
+    public float glowDuration = 0.2f;
+    public float brightnessMultiplier = 2f;
 
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
+
+        // Ensure each part has a Renderer component
+        foreach (var part in calungParts)
+        {
+            if (part.part != null)
+            {
+                part.partRenderer = part.part.GetComponent<Renderer>();
+                if (part.partRenderer != null)
+                {
+                    part.originalMaterial = part.partRenderer.material;
+                }
+            }
+        }
     }
 
     void Update()
@@ -30,7 +46,6 @@ public class CalungSound : MonoBehaviour
             for (int i = 0; i < Input.touchCount; i++)
             {
                 Touch touch = Input.GetTouch(i);
-
                 if (touch.phase == TouchPhase.Began)
                 {
                     ProcessTap(touch.position);
@@ -57,29 +72,27 @@ public class CalungSound : MonoBehaviour
                 if (hit.collider.gameObject == calungParts[j].part && calungParts[j].sound != null)
                 {
                     audioSource.PlayOneShot(calungParts[j].sound);
-                    StartCoroutine(GlowPart(calungParts[j].part, calungParts[j].glowColor, calungParts[j].glowIntensity));
+                    StartCoroutine(BrightnessEffect(calungParts[j]));
                     break;
                 }
             }
         }
     }
 
-    IEnumerator GlowPart(GameObject part, Color glowColor, float intensity)
-{
-    Renderer rend = part.GetComponent<Renderer>();
-    if (rend != null)
+    IEnumerator BrightnessEffect(CalungPart calungPart)
     {
-        Material mat = rend.material; // Ensure it's an instance
-        mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-        mat.EnableKeyword("_EMISSION");
-        mat.SetColor("_EmissionColor", glowColor * intensity);
-        DynamicGI.SetEmissive(rend, glowColor * intensity); // Ensure update
+        if (calungPart.partRenderer != null && calungPart.originalMaterial != null)
+        {
+            Material material = calungPart.partRenderer.material;
+            Color originalColor = material.color;
 
-        yield return new WaitForSeconds(0.2f);
+            // Increase brightness by multiplying RGB values
+            Color brightColor = originalColor * brightnessMultiplier;
+            brightColor.a = originalColor.a; // Keep the original alpha
 
-        mat.DisableKeyword("_EMISSION");
-        mat.SetColor("_EmissionColor", Color.black);
+            material.color = brightColor;
+            yield return new WaitForSeconds(glowDuration);
+            material.color = originalColor;
+        }
     }
-}
-
 }
