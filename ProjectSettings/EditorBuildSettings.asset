@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Simulasi.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/Inspect.unity
+    guid: 4f0d4dfb43f1e6743b279df470b03363
+  - enabled: 1
     path: Assets/Scenes/Informasi.unity
     guid: 58b03eed0bcd5074e8697bcc6708214a
   m_configObjects:
