@@ -11,6 +11,7 @@ public class CalungSound : MonoBehaviour
         public GameObject part;
         public Renderer partRenderer;
         public Material originalMaterial;
+        
     }
 
     public CalungPart[] calungParts = new CalungPart[14];
@@ -18,6 +19,7 @@ public class CalungSound : MonoBehaviour
     public Color glowColor = Color.white;
     public float glowDuration = 0.2f;
     public float brightnessMultiplier = 2f;
+    
 
     void Start()
     {
@@ -80,19 +82,27 @@ public class CalungSound : MonoBehaviour
     }
 
     IEnumerator BrightnessEffect(CalungPart calungPart)
+{
+    if (calungPart.partRenderer != null)
     {
-        if (calungPart.partRenderer != null && calungPart.originalMaterial != null)
-        {
-            Material material = calungPart.partRenderer.material;
-            Color originalColor = material.color;
+        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        Renderer renderer = calungPart.partRenderer;
 
-            // Increase brightness by multiplying RGB values
-            Color brightColor = originalColor * brightnessMultiplier;
-            brightColor.a = originalColor.a; // Keep the original alpha
+        // Get the original color
+        renderer.GetPropertyBlock(propertyBlock);
+        Color originalColor = calungPart.originalMaterial.color;
 
-            material.color = brightColor;
-            yield return new WaitForSeconds(glowDuration);
-            material.color = originalColor;
-        }
+        Color brightColor = originalColor * brightnessMultiplier;
+        brightColor.a = originalColor.a;
+
+        propertyBlock.SetColor("_Color", brightColor);
+        renderer.SetPropertyBlock(propertyBlock);
+
+        yield return new WaitForSeconds(glowDuration);
+
+        propertyBlock.SetColor("_Color", originalColor);
+        renderer.SetPropertyBlock(propertyBlock);
     }
+}
+
 }
