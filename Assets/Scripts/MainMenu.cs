@@ -23,10 +23,10 @@ public class MainMenu : MonoBehaviour
    {
     StartCoroutine(LoadSceneAsync("Inspect"));
    }
-
+ 
    public void Quit()
    {
-    Application.Quit();
+      Application.Quit();
    }
 
    IEnumerator LoadSceneAsync(string sceneName)
