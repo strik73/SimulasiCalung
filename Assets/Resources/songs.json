@@ -1,0 +1,12 @@
+{
+    "songs": [
+      {
+        "name": "Song A",
+        "sequence": [1, 3, 2, 4, 1]
+      },
+      {
+        "name": "Song B",
+        "sequence": [2, 4, 3, 1, 2]
+      }
+    ]
+  }
