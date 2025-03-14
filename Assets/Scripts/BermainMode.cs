@@ -6,6 +6,7 @@ public class BermainMode : MonoBehaviour
 {
     private SongData currentSong;
     private int currentIndex = 0;
+    public SongManager songmanager;
 
     public void StartGame(SongData song)
     {
@@ -36,6 +37,7 @@ public class BermainMode : MonoBehaviour
         else
         {
             Debug.Log("🎵 Song Finished!");
+            songmanager.ShowPanel();
         }
     }
 

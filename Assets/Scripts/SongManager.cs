@@ -12,12 +12,14 @@ public class SongManager : MonoBehaviour
     public GameObject songButtonTemplate;
     public GameObject songSelectionPanel;
     public GameObject scrollView;
-    public BermainMode bermainMode; // Reference to BermainMode script
+    public GameObject calung;
+    public BermainMode bermainMode;
 
     private SongData selectedSong;
 
     void Start()
     {
+        calung.SetActive(false);
         LoadSongs();
         PopulateSongList();
         FreezeGame();
@@ -71,6 +73,7 @@ public class SongManager : MonoBehaviour
     private void UnfreezeGame()
     {
         Time.timeScale = 1;
+        calung.SetActive(true);
     }
 
     private void HidePanel()
@@ -78,5 +81,12 @@ public class SongManager : MonoBehaviour
         contentPanel.gameObject.SetActive(false);
         scrollView.SetActive(false);
         songSelectionPanel.SetActive(false);
+    }
+    public void ShowPanel()
+    {
+        contentPanel.gameObject.SetActive(true);
+        scrollView.SetActive(true);
+        calung.SetActive(false);
+        songSelectionPanel.SetActive(true);
     }
 }
