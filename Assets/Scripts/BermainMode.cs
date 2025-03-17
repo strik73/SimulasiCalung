@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Required for UI components like Text
+using TMPro; // Required if using TextMeshPro
 
 public class BermainMode : MonoBehaviour
 {
     private SongData currentSong;
     private int currentIndex = 0;
+    private bool isFlashing = false;
     public SongManager songmanager;
+    public TextMeshProUGUI tapIndicatorText;
 
     public void StartGame(SongData song)
     {
@@ -32,11 +36,13 @@ public class BermainMode : MonoBehaviour
     {
         if (currentIndex < currentSong.sequence.Length)
         {
-            Debug.Log("Next tap: " + currentSong.sequence[currentIndex]);
+            int nextTap = currentSong.sequence[currentIndex];
+            tapIndicatorText.text = "Next Tap: " + nextTap;
         }
         else
         {
-            Debug.Log("🎵 Song Finished!");
+            // Debug.Log("🎵 Song Finished!");
+            // tapIndicatorText.text = "🎵 Song Finished!"; // Optionally update the UI text
             songmanager.ShowPanel();
         }
     }
@@ -54,14 +60,30 @@ public class BermainMode : MonoBehaviour
             int convertedIndex = currentSong.sequence[currentIndex] - 1;
             if (partIndex == convertedIndex)
             {
-                Debug.Log("✅ Correct!");
+                // Debug.Log("✅ Correct!");
                 currentIndex++;
                 ShowNextTap();
             }
             else
             {
-                Debug.Log("❌ Wrong part, try again.");
+                if (!isFlashing)
+                {
+                    StartCoroutine(FlashRedIndicator());
+                }
             }
         }
+
+        IEnumerator FlashRedIndicator()
+        {
+            isFlashing = true;
+            Color originalColor = tapIndicatorText.color;
+            tapIndicatorText.color = Color.red;
+
+            yield return new WaitForSeconds(0.3f);
+
+            tapIndicatorText.color = originalColor;
+            isFlashing = false;
+        }
+
     }
 }

@@ -11,10 +11,11 @@ public class SongManager : MonoBehaviour
     public Transform contentPanel;
     public GameObject songButtonTemplate;
     public GameObject songSelectionPanel;
-    public GameObject scrollView;
+    public GameObject musicPanel;
+    public GameObject finsihPanel;
     public GameObject calung;
     public BermainMode bermainMode;
-
+    public bool isGameFrozen;
     private SongData selectedSong;
 
     void Start()
@@ -22,7 +23,7 @@ public class SongManager : MonoBehaviour
         calung.SetActive(false);
         LoadSongs();
         PopulateSongList();
-        FreezeGame();
+        Time.timeScale = 0;
     }
 
     void LoadSongs()
@@ -56,8 +57,8 @@ public class SongManager : MonoBehaviour
     {
         selectedSong = song;
         UnfreezeGame();
-        HidePanel();
         bermainMode.StartGame(selectedSong);
+        PlayMusic();
     }
 
     public SongData GetSelectedSong()
@@ -67,26 +68,44 @@ public class SongManager : MonoBehaviour
 
     private void FreezeGame()
     {
+        StartCoroutine(FreezeGameAfterDelay());
+    }
+
+    private IEnumerator FreezeGameAfterDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
         Time.timeScale = 0;
+        isGameFrozen = true;
     }
 
     private void UnfreezeGame()
     {
         Time.timeScale = 1;
         calung.SetActive(true);
+        isGameFrozen = false;
     }
 
-    private void HidePanel()
+    private void PlayMusic()
     {
-        contentPanel.gameObject.SetActive(false);
-        scrollView.SetActive(false);
         songSelectionPanel.SetActive(false);
+        musicPanel.SetActive(true);
+    }
+    public void StopPlay()
+    {
+        calung.SetActive(false);
+        songSelectionPanel.SetActive(true);
+        musicPanel.SetActive(false);
     }
     public void ShowPanel()
     {
-        contentPanel.gameObject.SetActive(true);
-        scrollView.SetActive(true);
-        calung.SetActive(false);
-        songSelectionPanel.SetActive(true);
+        FreezeGame();
+        musicPanel.SetActive(false);
+        finsihPanel.SetActive(true);
+    }
+
+    public void KembaliButton()
+    {
+        finsihPanel.SetActive(false);
+        StopPlay();
     }
 }

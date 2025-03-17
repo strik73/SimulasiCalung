@@ -18,7 +18,8 @@ public class BermainManger : MonoBehaviour
     public Color glowColor = Color.white;
     public float glowDuration = 0.2f;
     public float brightnessMultiplier = 2f;
-    
+    public SongManager songManager;
+
     public BermainMode bermainMode; // Reference to BermainMode
 
     void Start()
@@ -42,6 +43,10 @@ public class BermainManger : MonoBehaviour
 
     void Update()
     {
+        // Skip input processing if game is frozen
+        if (songManager != null && songManager.isGameFrozen)
+            return;
+
         // Handle touch input (mobile)
         if (Input.touchCount > 0)
         {
