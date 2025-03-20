@@ -11,6 +11,8 @@ public class BermainMode : MonoBehaviour
     private bool isFlashing = false;
     public SongManager songmanager;
     public TextMeshProUGUI tapIndicatorText;
+    private string MusicNote;
+    private int TapNote;
 
     public void StartGame(SongData song)
     {
@@ -32,12 +34,65 @@ public class BermainMode : MonoBehaviour
         ShowNextTap();
     }
 
+    void MusicNoteString(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                MusicNote = ".5";
+                break;
+            case 2:
+                MusicNote = ".3";
+                break;
+            case 3:
+                MusicNote = ".2";
+                break;
+            case 4:
+                MusicNote = ".1";
+                break;
+            case 5:
+                MusicNote = "6";
+                break;
+            case 6:
+                MusicNote = "5";
+                break;
+            case 7:
+                MusicNote = "3";
+                break;
+            case 8:
+                MusicNote = "2";
+                break;
+            case 9:
+                MusicNote = "1";
+                break;
+            case 10:
+                MusicNote = "6'";
+                break;
+            case 11:
+                MusicNote = "5'";
+                break;
+            case 12:
+                MusicNote = "3'";
+                break;
+            case 13:
+                MusicNote = "2'";
+                break;
+            case 14:
+                MusicNote = "1'";
+                break;
+            default:
+                break;
+        }
+    }
+
     void ShowNextTap()
     {
+
         if (currentIndex < currentSong.sequence.Length)
         {
             int nextTap = currentSong.sequence[currentIndex];
-            tapIndicatorText.text = "Next Tap: " + nextTap;
+            MusicNoteString(nextTap);
+            tapIndicatorText.text = "Tekan Not: " + MusicNote;
         }
         else
         {
