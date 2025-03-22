@@ -39,46 +39,46 @@ public class BermainMode : MonoBehaviour
         switch (index)
         {
             case 1:
-                MusicNote = ".5";
-                break;
-            case 2:
-                MusicNote = ".3";
-                break;
-            case 3:
                 MusicNote = ".2";
                 break;
-            case 4:
+            case 2:
                 MusicNote = ".1";
                 break;
-            case 5:
+            case 3:
                 MusicNote = "6";
                 break;
-            case 6:
+            case 4:
                 MusicNote = "5";
                 break;
-            case 7:
+            case 5:
                 MusicNote = "3";
                 break;
-            case 8:
+            case 6:
                 MusicNote = "2";
                 break;
-            case 9:
+            case 7:
                 MusicNote = "1";
                 break;
-            case 10:
+            case 8:
                 MusicNote = "6'";
                 break;
-            case 11:
+            case 9:
                 MusicNote = "5'";
                 break;
-            case 12:
+            case 10:
                 MusicNote = "3'";
                 break;
-            case 13:
+            case 11:
                 MusicNote = "2'";
                 break;
-            case 14:
+            case 12:
                 MusicNote = "1'";
+                break;
+            case 13:
+                MusicNote = "6''";
+                break;
+            case 14:
+                MusicNote = "5''";
                 break;
             default:
                 break;
