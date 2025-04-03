@@ -11,7 +11,9 @@ public class BermainMode : MonoBehaviour
     private bool isFlashing = false;
     public SongManager songmanager;
     public TextMeshProUGUI tapIndicatorText;
+    public TextMeshProUGUI nextTapIndicatorText;
     private string MusicNote;
+    private string MusicNoteAfter;
     private int TapNote;
 
     public void StartGame(SongData song)
@@ -87,17 +89,25 @@ public class BermainMode : MonoBehaviour
 
     void ShowNextTap()
     {
-
         if (currentIndex < currentSong.sequence.Length)
         {
             int nextTap = currentSong.sequence[currentIndex];
             MusicNoteString(nextTap);
-            tapIndicatorText.text = "Tekan Not: " + MusicNote;
+            string currentNote = MusicNote;
+
+            string nextNote = "";
+            if (currentIndex + 1 < currentSong.sequence.Length)
+            {
+                int nextTapIndex = currentSong.sequence[currentIndex + 1];
+                MusicNoteString(nextTapIndex);
+                nextNote = MusicNote;
+            }
+
+            tapIndicatorText.text = $"Tekan Not: {currentNote}";
+            nextTapIndicatorText.text = nextNote != "" ? $"{nextNote}" : "-";
         }
         else
         {
-            // Debug.Log("🎵 Song Finished!");
-            // tapIndicatorText.text = "🎵 Song Finished!"; // Optionally update the UI text
             songmanager.ShowPanel();
         }
     }
@@ -115,7 +125,6 @@ public class BermainMode : MonoBehaviour
             int convertedIndex = currentSong.sequence[currentIndex] - 1;
             if (partIndex == convertedIndex)
             {
-                // Debug.Log("✅ Correct!");
                 currentIndex++;
                 ShowNextTap();
             }
