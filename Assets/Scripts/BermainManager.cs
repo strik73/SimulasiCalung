@@ -99,7 +99,6 @@ public class BermainManger : MonoBehaviour
             MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
             Renderer renderer = calungPart.partRenderer;
 
-            // Get the original color
             renderer.GetPropertyBlock(propertyBlock);
             Color originalColor = calungPart.originalMaterial.color;
 

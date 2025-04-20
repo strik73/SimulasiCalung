@@ -2,19 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Required for UI components like Text
-using TMPro; // Required if using TextMeshPro
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.SocialPlatforms.Impl; // Required if using TextMeshPro
 
 public class BermainMode : MonoBehaviour
 {
     private SongData currentSong;
     private int currentIndex = 0;
     private bool isFlashing = false;
+    private bool isScoreFlashing = false;
     public SongManager songmanager;
     public TextMeshProUGUI tapIndicatorText;
     public TextMeshProUGUI nextTapIndicatorText;
     private string MusicNote;
     private string MusicNoteAfter;
     private int TapNote;
+    public GameObject notePrefab;
+    public RectTransform spawnPoint;
+    public RectTransform hitPoint;
+    public float noteSpeed = 200f;
+    public float noteSpacing = 1f;
+    private int score = 0;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI finalScoreText;
+
 
     public void StartGame(SongData song)
     {
@@ -32,8 +44,9 @@ public class BermainMode : MonoBehaviour
             Debug.LogError("The selected song has no sequence data!");
             return;
         }
-
-        ShowNextTap();
+        score = 0;
+        UpdateScoreUI();
+        StartCoroutine(SpawnNotes());
     }
 
     void MusicNoteString(int index)
@@ -87,67 +100,144 @@ public class BermainMode : MonoBehaviour
         }
     }
 
-    void ShowNextTap()
-    {
-        if (currentIndex < currentSong.sequence.Length)
-        {
-            int nextTap = currentSong.sequence[currentIndex];
-            MusicNoteString(nextTap);
-            string currentNote = MusicNote;
-
-            string nextNote = "";
-            if (currentIndex + 1 < currentSong.sequence.Length)
-            {
-                int nextTapIndex = currentSong.sequence[currentIndex + 1];
-                MusicNoteString(nextTapIndex);
-                nextNote = MusicNote;
-            }
-
-            tapIndicatorText.text = $"Tekan Not: {currentNote}";
-            nextTapIndicatorText.text = nextNote != "" ? $"{nextNote}" : "-";
-        }
-        else
-        {
-            songmanager.ShowPanel();
-        }
-    }
-
     public void OnTap(int partIndex)
     {
-        if (currentSong == null || currentSong.sequence == null)
+        if (currentSong == null || currentSong.sequence == null) return;
+
+        FallingNote[] notes = FindObjectsOfType<FallingNote>();
+        bool noteHit = false;
+
+        foreach (var note in notes)
         {
-            Debug.LogError("No valid song data available!");
-            return;
+            float distance = Mathf.Abs(note.GetComponent<RectTransform>().anchoredPosition.y - hitPoint.anchoredPosition.y);
+            if (note.expectedTapIndex == partIndex && distance < 70f)
+            {
+                note.MarkAsHit();
+                Destroy(note.gameObject);
+                currentIndex++;
+                score += 100;
+                UpdateScoreUI();
+                noteHit = true;
+                return;
+            }
         }
 
-        if (currentIndex < currentSong.sequence.Length)
+        if (!noteHit && !isFlashing)
         {
-            int convertedIndex = currentSong.sequence[currentIndex] - 1;
-            if (partIndex == convertedIndex)
+            if (score > 0)
             {
-                currentIndex++;
-                ShowNextTap();
+                score -= 50;
+                UpdateScoreUI();
             }
             else
             {
-                if (!isFlashing)
-                {
-                    StartCoroutine(FlashRedIndicator());
-                }
+                score = 0;
+                UpdateScoreUI();
+            }
+            StartCoroutine(FlashRedIndicator());
+            StartCoroutine(ScoreFlashRed());
+        }
+    }
+
+    IEnumerator FlashRedIndicator()
+    {
+        isFlashing = true;
+
+        FallingNote[] notes = FindObjectsOfType<FallingNote>();
+        List<Color> originalColors = new List<Color>();
+
+        foreach (var note in notes)
+        {
+            TextMeshProUGUI noteText = note.GetComponent<TextMeshProUGUI>();
+            originalColors.Add(noteText.color);
+            noteText.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        for (int i = 0; i < notes.Length; i++)
+        {
+            if (notes[i] != null)
+            {
+                notes[i].GetComponent<TextMeshProUGUI>().color = originalColors[i];
             }
         }
 
-        IEnumerator FlashRedIndicator()
+        isFlashing = false;
+    }
+
+    public void MissedNote()
+    {
+        if (score > 50)
         {
-            isFlashing = true;
-            Color originalColor = tapIndicatorText.color;
-            tapIndicatorText.color = Color.red;
-
-            yield return new WaitForSeconds(0.3f);
-
-            tapIndicatorText.color = originalColor;
-            isFlashing = false;
+            score -= 50;
+        }
+        else
+        {
+            score = 0;
         }
 
+        StartCoroutine(ScoreFlashRed());
+        UpdateScoreUI();
     }
+
+    IEnumerator ScoreFlashRed()
+    {
+        isScoreFlashing = true;
+        Color originalColor = scoreText.color;
+        scoreText.color = Color.red;
+
+        yield return new WaitForSeconds(0.2f);
+
+        scoreText.color = originalColor;
+        isScoreFlashing = false;
+    }
+
+    void UpdateScoreUI()
+    {
+        scoreText.text = $"Skor: {score}";
+        finalScoreText.text = $"Skor: {score}";
+    }
+
+
+    IEnumerator SpawnNotes()
+    {
+        for (int i = 0; i < currentSong.sequence.Length; i++)
+        {
+            SpawnNote(currentSong.sequence[i]);
+            yield return new WaitForSeconds(noteSpacing);
+        }
+
+        yield return StartCoroutine(WaitForAllNotesDestroyed());
+
+        songmanager.ShowPanel();
+    }
+
+    IEnumerator WaitForAllNotesDestroyed()
+    {
+        while (true)
+        {
+            FallingNote[] remainingNotes = FindObjectsOfType<FallingNote>();
+            if (remainingNotes.Length == 0)
+                break;
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+
+    void SpawnNote(int noteIndex)
+    {
+        GameObject noteObj = Instantiate(notePrefab, spawnPoint.position, Quaternion.identity, spawnPoint.parent);
+        TextMeshProUGUI noteText = noteObj.GetComponent<TextMeshProUGUI>();
+        FallingNote noteScript = noteObj.GetComponent<FallingNote>();
+
+        MusicNoteString(noteIndex);
+        noteText.text = MusicNote;
+
+        noteScript.expectedTapIndex = noteIndex - 1;
+        noteScript.speed = noteSpeed;
+        noteScript.hitY = hitPoint.anchoredPosition.y;
+    }
+
 }
