@@ -20,7 +20,7 @@ public class FallingNote : MonoBehaviour
     {
         rectTransform.anchoredPosition += new Vector2(speed * Time.deltaTime, 0);
 
-        if (rectTransform.anchoredPosition.x > hitX + 800f)
+        if (rectTransform.anchoredPosition.x > hitX + 1200f)
         {
             if (!wasHit)
             {

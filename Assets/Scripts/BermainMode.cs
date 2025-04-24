@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Required for UI components like Text
 using TMPro;
-using Unity.VisualScripting;
-using UnityEngine.SocialPlatforms.Impl; // Required if using TextMeshPro
 
 public class BermainMode : MonoBehaviour
 {
@@ -101,43 +98,43 @@ public class BermainMode : MonoBehaviour
     }
 
     public void OnTap(int partIndex)
-{
-    if (currentSong == null || currentSong.sequence == null) return;
-
-    FallingNote[] notes = FindObjectsOfType<FallingNote>();
-    bool noteHit = false;
-
-    foreach (var note in notes)
     {
-        float distance = Mathf.Abs(note.GetComponent<RectTransform>().anchoredPosition.x - hitPoint.anchoredPosition.x);
-        if (note.expectedTapIndex == partIndex && distance < 100f)
+        if (currentSong == null || currentSong.sequence == null) return;
+
+        FallingNote[] notes = FindObjectsOfType<FallingNote>();
+        bool noteHit = false;
+
+        foreach (var note in notes)
         {
-            note.MarkAsHit();
-            Destroy(note.gameObject);
-            currentIndex++;
-            score += 100;
+            float distance = Mathf.Abs(note.GetComponent<RectTransform>().anchoredPosition.x - hitPoint.anchoredPosition.x);
+            if (note.expectedTapIndex == partIndex && distance < 100f)
+            {
+                note.MarkAsHit();
+                Destroy(note.gameObject);
+                currentIndex++;
+                score += 100;
+                UpdateScoreUI();
+                noteHit = true;
+                return;
+            }
+        }
+
+        if (!noteHit && !isFlashing)
+        {
+            if (score > 0)
+            {
+                score -= 50;
+            }
+            else
+            {
+                score = 0;
+            }
+
             UpdateScoreUI();
-            noteHit = true;
-            return;
+            StartCoroutine(FlashRedIndicator());
+            StartCoroutine(ScoreFlashRed());
         }
     }
-
-    if (!noteHit && !isFlashing)
-    {
-        if (score > 0)
-        {
-            score -= 50;
-        }
-        else
-        {
-            score = 0;
-        }
-
-        UpdateScoreUI();
-        StartCoroutine(FlashRedIndicator());
-        StartCoroutine(ScoreFlashRed());
-    }
-}
 
 
     IEnumerator FlashRedIndicator()
