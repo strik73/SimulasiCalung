@@ -7,7 +7,7 @@ public class FallingNote : MonoBehaviour
     public int expectedTapIndex;
     public float speed;
     private RectTransform rectTransform;
-    public float hitY;
+    public float hitX;
     private BermainMode bermainMode;
     private bool wasHit = false;
     void Start()
@@ -18,9 +18,9 @@ public class FallingNote : MonoBehaviour
 
     void Update()
     {
-        rectTransform.anchoredPosition -= new Vector2(0, speed * Time.deltaTime);
+        rectTransform.anchoredPosition += new Vector2(speed * Time.deltaTime, 0);
 
-        if (rectTransform.anchoredPosition.y < hitY - 200f)
+        if (rectTransform.anchoredPosition.x > hitX + 800f)
         {
             if (!wasHit)
             {

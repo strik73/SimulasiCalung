@@ -101,43 +101,44 @@ public class BermainMode : MonoBehaviour
     }
 
     public void OnTap(int partIndex)
+{
+    if (currentSong == null || currentSong.sequence == null) return;
+
+    FallingNote[] notes = FindObjectsOfType<FallingNote>();
+    bool noteHit = false;
+
+    foreach (var note in notes)
     {
-        if (currentSong == null || currentSong.sequence == null) return;
-
-        FallingNote[] notes = FindObjectsOfType<FallingNote>();
-        bool noteHit = false;
-
-        foreach (var note in notes)
+        float distance = Mathf.Abs(note.GetComponent<RectTransform>().anchoredPosition.x - hitPoint.anchoredPosition.x);
+        if (note.expectedTapIndex == partIndex && distance < 100f)
         {
-            float distance = Mathf.Abs(note.GetComponent<RectTransform>().anchoredPosition.y - hitPoint.anchoredPosition.y);
-            if (note.expectedTapIndex == partIndex && distance < 70f)
-            {
-                note.MarkAsHit();
-                Destroy(note.gameObject);
-                currentIndex++;
-                score += 100;
-                UpdateScoreUI();
-                noteHit = true;
-                return;
-            }
-        }
-
-        if (!noteHit && !isFlashing)
-        {
-            if (score > 0)
-            {
-                score -= 50;
-                UpdateScoreUI();
-            }
-            else
-            {
-                score = 0;
-                UpdateScoreUI();
-            }
-            StartCoroutine(FlashRedIndicator());
-            StartCoroutine(ScoreFlashRed());
+            note.MarkAsHit();
+            Destroy(note.gameObject);
+            currentIndex++;
+            score += 100;
+            UpdateScoreUI();
+            noteHit = true;
+            return;
         }
     }
+
+    if (!noteHit && !isFlashing)
+    {
+        if (score > 0)
+        {
+            score -= 50;
+        }
+        else
+        {
+            score = 0;
+        }
+
+        UpdateScoreUI();
+        StartCoroutine(FlashRedIndicator());
+        StartCoroutine(ScoreFlashRed());
+    }
+}
+
 
     IEnumerator FlashRedIndicator()
     {
@@ -237,7 +238,7 @@ public class BermainMode : MonoBehaviour
 
         noteScript.expectedTapIndex = noteIndex - 1;
         noteScript.speed = noteSpeed;
-        noteScript.hitY = hitPoint.anchoredPosition.y;
+        noteScript.hitX = hitPoint.anchoredPosition.y;
     }
 
 }
