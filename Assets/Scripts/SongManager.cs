@@ -17,12 +17,14 @@ public class SongManager : MonoBehaviour
     public BermainMode bermainMode;
     public bool isGameFrozen;
     private SongData selectedSong;
+    public BermainUI bermainUI;
 
     void Start()
     {
         calung.SetActive(false);
         LoadSongs();
         PopulateSongList();
+        bermainUI.ShowTutorialImage();
         Time.timeScale = 0;
     }
 

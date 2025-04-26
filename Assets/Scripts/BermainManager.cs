@@ -81,10 +81,9 @@ public class BermainManger : MonoBehaviour
                     audioSource.PlayOneShot(calungParts[j].sound);
                     StartCoroutine(BrightnessEffect(calungParts[j]));
 
-                    // Send the tap to BermainMode to check against the song sequence
                     if (bermainMode != null)
                     {
-                        bermainMode.OnTap(j); // Passing the tapped part index
+                        bermainMode.OnTap(j);
                     }
                     break;
                 }
