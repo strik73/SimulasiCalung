@@ -13,6 +13,7 @@ public class BermainUI : MonoBehaviour
     public SongManager songManager;
     public GameObject tutorialImage;
     public GameObject playArea;
+    public GameObject ConfirmationPanel;
 
     public void Stop()
     {
@@ -35,6 +36,21 @@ public class BermainUI : MonoBehaviour
         {
             button.interactable = false;
         }
+    }
+
+    public void ShowConfirmationPanel()
+    {
+        ConfirmationPanel.SetActive(true);
+        songManager.songSelectionPanel.SetActive(false);
+        playArea.SetActive(false);
+        Time.timeScale = 0;
+    }
+    public void HideConfirmationPanel()
+    {
+        ConfirmationPanel.SetActive(false);
+        songManager.songSelectionPanel.SetActive(true);
+        playArea.SetActive(true);
+        Time.timeScale = 1;
     }
 
 }

@@ -103,6 +103,8 @@ public class SongManager : MonoBehaviour
         FreezeGame();
         musicPanel.SetActive(false);
         finsihPanel.SetActive(true);
+        bermainMode.HomeButton.SetActive(true);
+        bermainMode.StopButton.SetActive(false);
     }
 
     public void KembaliButton()

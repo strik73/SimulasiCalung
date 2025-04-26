@@ -60,8 +60,7 @@ public class BermainManger : MonoBehaviour
             }
         }
 
-        // Handle mouse input (PC)
-        if (Input.GetMouseButtonDown(0)) // Left click
+        if (Input.GetMouseButtonDown(0))
         {
             ProcessTap(Input.mousePosition);
         }

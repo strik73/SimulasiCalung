@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class BermainMode : MonoBehaviour
 {
     private SongData currentSong;
@@ -23,6 +23,8 @@ public class BermainMode : MonoBehaviour
     private int score = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI finalScoreText;
+    public GameObject StopButton;
+    public GameObject HomeButton;
 
 
     public void StartGame(SongData song)
@@ -41,6 +43,10 @@ public class BermainMode : MonoBehaviour
             Debug.LogError("The selected song has no sequence data!");
             return;
         }
+
+        HomeButton.SetActive(false);
+        StopButton.SetActive(true);
+
         score = 0;
         UpdateScoreUI();
         StartCoroutine(SpawnNotes());
@@ -236,6 +242,12 @@ public class BermainMode : MonoBehaviour
         noteScript.expectedTapIndex = noteIndex - 1;
         noteScript.speed = noteSpeed;
         noteScript.hitX = hitPoint.anchoredPosition.y;
+    }
+
+    public void StopBermain()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
 }
