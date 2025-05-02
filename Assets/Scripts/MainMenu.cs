@@ -13,6 +13,10 @@ public class MainMenu : MonoBehaviour
    {
     StartCoroutine(LoadSceneAsync("Simulasi"));
    }
+   public void Bermain()
+   {
+    StartCoroutine(LoadSceneAsync("Bermain"));
+   }
 
    public void Informasi()
    {
