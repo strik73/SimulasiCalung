@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SimulasiUI : MonoBehaviour
 {
-    private GameObject tutorialPanel;
+    [SerializeField] private GameObject tutorialPanel;
+    public GameObject confirmationPanel;
     private CanvasGroup canvasGroup;
     private float fadeDuration = 0.5f;
+    [SerializeField] private MonoBehaviour calungManagerScript;
+    [SerializeField] private Button[] disabledButtons;
 
     void Start()
     {
-        tutorialPanel = GameObject.Find("Panel Tutorial");
         canvasGroup = tutorialPanel.GetComponent<CanvasGroup>();
         tutorialPanel.SetActive(false);
+        Time.timeScale = 1;
     }
     void Update()
     {
@@ -21,10 +25,6 @@ public class SimulasiUI : MonoBehaviour
         {
             HideTutorialImage();
         }
-    }
-    public void Stop()
-    {
-        SceneManager.LoadScene("MainMenu");
     }
 
     public void ShowTutorialImage()
@@ -36,12 +36,37 @@ public class SimulasiUI : MonoBehaviour
     public void HideTutorialImage()
     {
         StartCoroutine(FadeOut());
-        //tutorialPanel.SetActive(false);
+    }
+    public void ShowConfirmationPanel()
+    {
+        confirmationPanel.SetActive(true);
+        calungManagerScript.enabled = false;
+        foreach (Button button in disabledButtons)
+        {
+            button.interactable = false;
+        }
+        Time.timeScale = 0;
+    }
+
+    public void Keluar()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Tidak()
+    {
+        confirmationPanel.SetActive(false);
+        calungManagerScript.enabled = true;
+        foreach (Button button in disabledButtons)
+        {
+            button.interactable = true;
+        }
+        Time.timeScale = 1;
     }
 
     IEnumerator FadeIn()
     {
-       float elapsedTime = 0f;
+        float elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
             canvasGroup.alpha = elapsedTime / fadeDuration;
