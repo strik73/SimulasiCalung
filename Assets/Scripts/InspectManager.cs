@@ -7,18 +7,31 @@ public class RotateObject : MonoBehaviour
     public float Speed = 10f;
     private bool isRotating = false;
     private Vector2 touchStartPosition;
-    private bool rotateOnXAxis = false;
+    private bool rotateOnYAxis = false;
     public TextMeshProUGUI axis;
+    [SerializeField] private GameObject rotateSprite;
+    [SerializeField] private GameObject rotateVertSprite;
 
     void Start()
     {
         UpdateAxisText();
+        rotateSprite.SetActive(true);
     }
 
     public void AxisToggle()
     {
-        rotateOnXAxis = !rotateOnXAxis;
+        rotateOnYAxis = !rotateOnYAxis;
         UpdateAxisText();
+        if (rotateOnYAxis)
+        {
+            rotateSprite.SetActive(false);
+            rotateVertSprite.SetActive(true);
+        }
+        else
+        {
+            rotateSprite.SetActive(true);
+            rotateVertSprite.SetActive(false);
+        }
     }
 
     public void ZoomIn()
@@ -33,7 +46,7 @@ public class RotateObject : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0) // Mobile touch input
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
@@ -50,7 +63,7 @@ public class RotateObject : MonoBehaviour
             {
                 Vector2 touchDelta = touch.position - touchStartPosition;
 
-                if (rotateOnXAxis)
+                if (rotateOnYAxis)
                 {
                     transform.Rotate(Vector3.right, -touchDelta.y * Speed * Time.deltaTime);
                 }
@@ -62,7 +75,7 @@ public class RotateObject : MonoBehaviour
                 touchStartPosition = touch.position;
             }
         }
-        else if (Input.GetMouseButtonDown(0)) // PC mouse input
+        else if (Input.GetMouseButtonDown(0))
         {
             isRotating = true;
             touchStartPosition = Input.mousePosition;
@@ -77,7 +90,7 @@ public class RotateObject : MonoBehaviour
             Vector2 mouseCurrentPosition = Input.mousePosition;
             Vector2 mouseDelta = mouseCurrentPosition - touchStartPosition;
 
-            if (rotateOnXAxis)
+            if (rotateOnYAxis)
             {
                 transform.Rotate(Vector3.right, -mouseDelta.y * Speed * Time.deltaTime);
             }
@@ -92,6 +105,6 @@ public class RotateObject : MonoBehaviour
 
     private void UpdateAxisText()
     {
-        axis.text = rotateOnXAxis ? "Vertical" : "Horizontal";
+        axis.text = rotateOnYAxis ? "Vertical" : "Horizontal";
     }
 }

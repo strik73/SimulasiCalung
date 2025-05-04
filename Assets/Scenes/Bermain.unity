@@ -209,32 +209,32 @@ MonoBehaviour:
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part9
-    sound: {fileID: 8300000, guid: b2edd445e1d2320408852d46eafaa4a1, type: 3}
+    sound: {fileID: 8300000, guid: 4973e813c79ace442a41a7188bce1de4, type: 3}
     part: {fileID: 1059799554}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part10
-    sound: {fileID: 8300000, guid: 102be90727b9d06458a6147c225219b5, type: 3}
+    sound: {fileID: 8300000, guid: 155b844ab2bb4b44e8b75feb1ddc5d14, type: 3}
     part: {fileID: 362549244}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part11
-    sound: {fileID: 8300000, guid: 47ac305ea7127664d9573b3296f40bb2, type: 3}
+    sound: {fileID: 8300000, guid: 26e6d3f4556d3804694dd4a8ea1aa2b2, type: 3}
     part: {fileID: 678446608}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part12
-    sound: {fileID: 8300000, guid: 82fb8abc42071eb4fb8fb4473d69f586, type: 3}
+    sound: {fileID: 8300000, guid: b635abbfedeaff84b9dd4559f4c7ac50, type: 3}
     part: {fileID: 639268670}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part13
-    sound: {fileID: 8300000, guid: d2efcbc744a7fe040ab351963f84b385, type: 3}
+    sound: {fileID: 8300000, guid: c973c80844dee24448781e4e01a1a7b9, type: 3}
     part: {fileID: 1674128031}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
   - name: part14
-    sound: {fileID: 8300000, guid: 49574f61284f53c42864d74095c844b9, type: 3}
+    sound: {fileID: 8300000, guid: e3af9557beca9164c9b50857f203f053, type: 3}
     part: {fileID: 1325299183}
     partRenderer: {fileID: 0}
     originalMaterial: {fileID: 0}
@@ -3142,7 +3142,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 74813487}
         m_TargetAssemblyTypeName: BermainUI, Assembly-CSharp
-        m_MethodName: Stop
+        m_MethodName: Keluar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
