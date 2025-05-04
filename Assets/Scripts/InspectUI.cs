@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InspectUI : MonoBehaviour
 {
     public Button[] disabledButtons;
+    [SerializeField] private GameObject confirmationPanel;
 
     void Start()
     {
@@ -16,9 +17,26 @@ public class InspectUI : MonoBehaviour
             button.interactable = false;
         }
     }
-    public void Stop()
+    public void Keluar()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShowConfirmationPanel()
+    {
+        confirmationPanel.SetActive(true);
+        foreach (Button button in disabledButtons)
+        {
+            button.interactable = false;
+        }
+    }
+    public void Tidak()
+    {
+        confirmationPanel.SetActive(false);
+        foreach (Button button in disabledButtons)
+        {
+            button.interactable = true;
+        }
     }
 
     public void HideTutorialImage()

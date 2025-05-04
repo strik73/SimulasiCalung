@@ -15,7 +15,7 @@ public class BermainUI : MonoBehaviour
     public GameObject playArea;
     public GameObject ConfirmationPanel;
 
-    public void Stop()
+    public void Keluar()
     {
         SceneManager.LoadScene("MainMenu");
     }
@@ -45,7 +45,7 @@ public class BermainUI : MonoBehaviour
         playArea.SetActive(false);
         Time.timeScale = 0;
     }
-    public void HideConfirmationPanel()
+    public void Tidak()
     {
         ConfirmationPanel.SetActive(false);
         songManager.songSelectionPanel.SetActive(true);

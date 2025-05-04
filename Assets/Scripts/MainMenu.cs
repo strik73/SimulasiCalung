@@ -8,26 +8,37 @@ public class MainMenu : MonoBehaviour
 {
    public GameObject loadingScreen;
    public Slider progressBar;
+   [SerializeField] private GameObject confirmationPanel;
 
    public void Simulasi()
    {
-    StartCoroutine(LoadSceneAsync("Simulasi"));
+      StartCoroutine(LoadSceneAsync("Simulasi"));
    }
    public void Bermain()
    {
-    StartCoroutine(LoadSceneAsync("Bermain"));
+      StartCoroutine(LoadSceneAsync("Bermain"));
    }
 
    public void Informasi()
    {
-    StartCoroutine(LoadSceneAsync("Informasi"));
+      StartCoroutine(LoadSceneAsync("Informasi"));
    }
 
    public void Inspect()
    {
-    StartCoroutine(LoadSceneAsync("Inspect"));
+      StartCoroutine(LoadSceneAsync("Inspect"));
    }
- 
+
+   public void ShowConfirmationPanel()
+   {
+      confirmationPanel.SetActive(true);
+   }
+
+   public void Tidak()
+   {
+      confirmationPanel.SetActive(false);
+   }
+
    public void Quit()
    {
       Application.Quit();
@@ -42,8 +53,8 @@ public class MainMenu : MonoBehaviour
 
       while (operation.progress < 0.9f)
       {
-        progressBar.value = operation.progress;
-        yield return null;
+         progressBar.value = operation.progress;
+         yield return null;
       }
 
       progressBar.value = 1f;
