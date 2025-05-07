@@ -8,6 +8,7 @@ public class InspectUI : MonoBehaviour
 {
     public Button[] disabledButtons;
     [SerializeField] private GameObject confirmationPanel;
+    [SerializeField] private GameObject tutorialPanel;
 
     void Start()
     {
@@ -41,7 +42,7 @@ public class InspectUI : MonoBehaviour
 
     public void HideTutorialImage()
     {
-        GameObject.Find("TutorialImage").SetActive(false);
+        tutorialPanel.SetActive(false);
         Time.timeScale = 1;
         foreach (Button button in disabledButtons)
         {

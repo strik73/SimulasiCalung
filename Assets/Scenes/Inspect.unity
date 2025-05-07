@@ -1214,6 +1214,7 @@ MonoBehaviour:
   - {fileID: 344395275}
   - {fileID: 352589189}
   confirmationPanel: {fileID: 421736847}
+  tutorialPanel: {fileID: 1905155127}
 --- !u!4 &555273398
 Transform:
   m_ObjectHideFlags: 0
