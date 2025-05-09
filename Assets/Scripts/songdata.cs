@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class SongData
 {
-    public string name;        // Name of the song
+    public string name;
     public int[] sequence;
 }
 [Serializable]

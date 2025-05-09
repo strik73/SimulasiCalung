@@ -27,7 +27,6 @@ public class BermainManger : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
-        // Ensure each part has a Renderer component
         foreach (var part in calungParts)
         {
             if (part.part != null)
@@ -43,11 +42,9 @@ public class BermainManger : MonoBehaviour
 
     void Update()
     {
-        // Skip input processing if game is frozen
         if (songManager != null && songManager.isGameFrozen)
             return;
 
-        // Handle touch input (mobile)
         if (Input.touchCount > 0)
         {
             for (int i = 0; i < Input.touchCount; i++)
