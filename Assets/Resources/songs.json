@@ -1,12 +1,41 @@
 {
-    "songs": [
-      {
-        "name": "Bubuy Bulan",
-        "sequence": [6, 5, 6, 7, 8, 7, 6, 5, 6, 5, 6, 7, 8, 7, 6, 5, 6, 5, 6, 7, 8, 7, 6, 5]
-      },
-      {
-        "name": "Cing Cangkeling",
-        "sequence": [6, 5, 14]
-      }
-    ]
-  }
+  "songs": [
+    {
+      "name": "Bubuy Bulan",
+      "notes": [
+        { "pitch": 6, "time": 0.0 },
+        { "pitch": 5, "time": 0.6 },
+        { "pitch": 6, "time": 1.2 },
+        { "pitch": 7, "time": 1.8 },
+        { "pitch": 8, "time": 2.4 },
+        { "pitch": 7, "time": 3.0 },
+        { "pitch": 6, "time": 3.6 },
+        { "pitch": 5, "time": 4.2 },
+        { "pitch": 6, "time": 4.8 },
+        { "pitch": 5, "time": 5.4 },
+        { "pitch": 6, "time": 6.0 },
+        { "pitch": 7, "time": 6.6 },
+        { "pitch": 8, "time": 8.0 },
+        { "pitch": 7, "time": 8.6 },
+        { "pitch": 6, "time": 9.2 },
+        { "pitch": 5, "time": 9.8 },
+        { "pitch": 6, "time": 10.4 },
+        { "pitch": 5, "time": 11.0 },
+        { "pitch": 6, "time": 11.6 },
+        { "pitch": 7, "time": 12.2 },
+        { "pitch": 8, "time": 12.8 },
+        { "pitch": 7, "time": 13.4 },
+        { "pitch": 6, "time": 14.0 },
+        { "pitch": 5, "time": 14.6 }
+      ]
+    },
+    {
+      "name": "Cing Cangkeling",
+      "notes": [
+        { "pitch": 6, "time": 0.0 },
+        { "pitch": 5, "time": 0.7 },
+        { "pitch": 14, "time": 1.4 }
+      ]
+    }
+  ]
+}

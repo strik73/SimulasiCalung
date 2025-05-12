@@ -38,7 +38,7 @@ public class BermainMode : MonoBehaviour
         currentSong = song;
         currentIndex = 0;
 
-        if (currentSong.sequence == null || currentSong.sequence.Length == 0)
+        if (currentSong.notes == null || currentSong.notes.Length == 0)
         {
             Debug.LogError("The selected song has no sequence data!");
             return;
@@ -105,7 +105,7 @@ public class BermainMode : MonoBehaviour
 
     public void OnTap(int partIndex)
     {
-        if (currentSong == null || currentSong.sequence == null) return;
+        if (currentSong == null || currentSong.notes == null) return;
 
         FallingNote[] notes = FindObjectsOfType<FallingNote>();
         bool noteHit = false;
@@ -203,17 +203,20 @@ public class BermainMode : MonoBehaviour
         finalScoreText.text = $"Skor: {score}";
     }
 
-
     IEnumerator SpawnNotes()
     {
-        for (int i = 0; i < currentSong.sequence.Length; i++)
+        float startTime = Time.time;
+
+        for (int i = 0; i < currentSong.notes.Length; i++)
         {
-            SpawnNote(currentSong.sequence[i]);
-            yield return new WaitForSeconds(noteSpacing);
+            float delay = currentSong.notes[i].time - (Time.time - startTime);
+            if (delay > 0)
+                yield return new WaitForSeconds(delay);
+
+            SpawnNote(currentSong.notes[i].pitch);
         }
 
         yield return StartCoroutine(WaitForAllNotesDestroyed());
-
         songmanager.ShowPanel();
     }
 
@@ -228,7 +231,6 @@ public class BermainMode : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
-
 
     void SpawnNote(int noteIndex)
     {
