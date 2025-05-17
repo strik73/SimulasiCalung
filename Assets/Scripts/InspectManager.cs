@@ -36,13 +36,25 @@ public class RotateObject : MonoBehaviour
 
     public void ZoomIn()
     {
-        transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 newScale = transform.localScale + new Vector3(0.1f, 0.1f, 0.1f);
+        float maxScale = 2f;
+        newScale.x = Mathf.Max(newScale.x, maxScale);
+        newScale.y = Mathf.Max(newScale.y, maxScale);
+        newScale.z = Mathf.Max(newScale.z, maxScale);
+        transform.localScale = newScale;
     }
 
     public void ZoomOut()
     {
-        transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 newScale = transform.localScale - new Vector3(0.1f, 0.1f, 0.1f);
+        float minScale = 0.1f;
+        newScale.x = Mathf.Max(newScale.x, minScale);
+        newScale.y = Mathf.Max(newScale.y, minScale);
+        newScale.z = Mathf.Max(newScale.z, minScale);
+        transform.localScale = newScale;
     }
+
+
 
     void Update()
     {
