@@ -194,7 +194,6 @@ public class BermainMode : MonoBehaviour
         }
 
         scoreFlashCoroutine = StartCoroutine(ScoreFlashRedCoroutine());
-        StartCoroutine(FinalScoreFlashRedCoroutine());
     }
 
     IEnumerator ScoreFlashRedCoroutine()
@@ -203,13 +202,6 @@ public class BermainMode : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         scoreText.color = Color.white; // or your original color
         scoreFlashCoroutine = null;
-    }
-
-    IEnumerator FinalScoreFlashRedCoroutine()
-    {
-        finalScoreText.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        finalScoreText.color = Color.white; // or your original color
     }
 
     void UpdateScoreUI()
