@@ -25,6 +25,8 @@ public class BermainMode : MonoBehaviour
     public TextMeshProUGUI finalScoreText;
     public GameObject StopButton;
     public GameObject HomeButton;
+    private Coroutine scoreFlashCoroutine;
+
 
 
     public void StartGame(SongData song)
@@ -57,46 +59,46 @@ public class BermainMode : MonoBehaviour
         switch (index)
         {
             case 1:
-                MusicNote = ".2";
+                MusicNote = ".5";
                 break;
             case 2:
-                MusicNote = ".1";
+                MusicNote = ".6";
                 break;
             case 3:
-                MusicNote = "6";
+                MusicNote = "1";
                 break;
             case 4:
-                MusicNote = "5";
+                MusicNote = "2";
                 break;
             case 5:
                 MusicNote = "3";
                 break;
             case 6:
-                MusicNote = "2";
+                MusicNote = "5";
                 break;
             case 7:
-                MusicNote = "1";
+                MusicNote = "6";
                 break;
             case 8:
-                MusicNote = "6'";
+                MusicNote = "1'";
                 break;
             case 9:
-                MusicNote = "5'";
+                MusicNote = "2'";
                 break;
             case 10:
                 MusicNote = "3'";
                 break;
             case 11:
-                MusicNote = "2'";
+                MusicNote = "5'";
                 break;
             case 12:
-                MusicNote = "1'";
+                MusicNote = "6'";
                 break;
             case 13:
-                MusicNote = "6''";
+                MusicNote = "1''";
                 break;
             case 14:
-                MusicNote = "5''";
+                MusicNote = "2''";
                 break;
             default:
                 break;
@@ -138,7 +140,7 @@ public class BermainMode : MonoBehaviour
 
             UpdateScoreUI();
             StartCoroutine(FlashRedIndicator());
-            StartCoroutine(ScoreFlashRed());
+            StartScoreFlash();
         }
     }
 
@@ -181,20 +183,33 @@ public class BermainMode : MonoBehaviour
             score = 0;
         }
 
-        StartCoroutine(ScoreFlashRed());
+        StartScoreFlash();
         UpdateScoreUI();
     }
-
-    IEnumerator ScoreFlashRed()
+    void StartScoreFlash()
     {
-        isScoreFlashing = true;
-        Color originalColor = scoreText.color;
+        if (scoreFlashCoroutine != null)
+        {
+            StopCoroutine(scoreFlashCoroutine);
+        }
+
+        scoreFlashCoroutine = StartCoroutine(ScoreFlashRedCoroutine());
+        StartCoroutine(FinalScoreFlashRedCoroutine());
+    }
+
+    IEnumerator ScoreFlashRedCoroutine()
+    {
         scoreText.color = Color.red;
-
         yield return new WaitForSeconds(0.2f);
+        scoreText.color = Color.white; // or your original color
+        scoreFlashCoroutine = null;
+    }
 
-        scoreText.color = originalColor;
-        isScoreFlashing = false;
+    IEnumerator FinalScoreFlashRedCoroutine()
+    {
+        finalScoreText.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        finalScoreText.color = Color.white; // or your original color
     }
 
     void UpdateScoreUI()
