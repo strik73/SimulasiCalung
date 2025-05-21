@@ -141,9 +141,7 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1
-  preloadedAssets:
-  - {fileID: -6408592209973857936, guid: d27ff3918a8d1a64cbf8e6ef0ecf446a, type: 2}
-  - {fileID: 11400000, guid: 1709c6ccaf251b742a9018aae674a764, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -287,7 +285,14 @@ PlayerSettings:
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: 2880951e0077f8a47a303168042f39f8, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: Android
     m_Icons:
@@ -352,8 +357,8 @@ PlayerSettings:
       m_Kind: 0
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: f8b4dd47364bdc0469cc00b4f4fd5b46, type: 3}
-      - {fileID: 2800000, guid: 3be29de44264bfd4da6b16443c3657e5, type: 3}
+      - {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+      - {fileID: 2800000, guid: 2880951e0077f8a47a303168042f39f8, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2
