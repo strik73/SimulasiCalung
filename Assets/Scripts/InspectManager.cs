@@ -38,9 +38,9 @@ public class RotateObject : MonoBehaviour
     {
         Vector3 newScale = transform.localScale + new Vector3(0.1f, 0.1f, 0.1f);
         float maxScale = 2f;
-        newScale.x = Mathf.Max(newScale.x, maxScale);
-        newScale.y = Mathf.Max(newScale.y, maxScale);
-        newScale.z = Mathf.Max(newScale.z, maxScale);
+        newScale.x = Mathf.Min(newScale.x, maxScale);
+        newScale.y = Mathf.Min(newScale.y, maxScale);
+        newScale.z = Mathf.Min(newScale.z, maxScale);
         transform.localScale = newScale;
     }
 
