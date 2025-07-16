@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
+
 
 public class RotateObject : MonoBehaviour
 {
@@ -61,6 +63,11 @@ public class RotateObject : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
+
+            // ✅ Ignore rotation if touch is on a UI element
+            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                return;
+
             if (touch.phase == TouchPhase.Began)
             {
                 isRotating = true;
@@ -87,33 +94,8 @@ public class RotateObject : MonoBehaviour
                 touchStartPosition = touch.position;
             }
         }
-        else if (Input.GetMouseButtonDown(0))
-        {
-            isRotating = true;
-            touchStartPosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            isRotating = false;
-        }
-
-        if (isRotating && Input.GetMouseButton(0))
-        {
-            Vector2 mouseCurrentPosition = Input.mousePosition;
-            Vector2 mouseDelta = mouseCurrentPosition - touchStartPosition;
-
-            if (rotateOnYAxis)
-            {
-                transform.Rotate(Vector3.right, -mouseDelta.y * Speed * Time.deltaTime);
-            }
-            else
-            {
-                transform.Rotate(Vector3.up, -mouseDelta.x * Speed * Time.deltaTime);
-            }
-
-            touchStartPosition = mouseCurrentPosition;
-        }
     }
+
 
     private void UpdateAxisText()
     {
