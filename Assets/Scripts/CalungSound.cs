@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CalungSound : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class CalungSound : MonoBehaviour
         public GameObject part;
         public Renderer partRenderer;
         public Material originalMaterial;
-        
+
     }
 
     public CalungPart[] calungParts = new CalungPart[14];
@@ -19,14 +20,14 @@ public class CalungSound : MonoBehaviour
     public Color glowColor = Color.white;
     public float glowDuration = 0.2f;
     public float brightnessMultiplier = 2f;
-    
+    private HashSet<GameObject> touchedParts = new HashSet<GameObject>();
+
 
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
-        // Ensure each part has a Renderer component
         foreach (var part in calungParts)
         {
             if (part.part != null)
@@ -42,27 +43,32 @@ public class CalungSound : MonoBehaviour
 
     void Update()
     {
-        // Handle touch input (mobile)
         if (Input.touchCount > 0)
         {
-            for (int i = 0; i < Input.touchCount; i++)
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
             {
-                Touch touch = Input.GetTouch(i);
-                if (touch.phase == TouchPhase.Began)
-                {
-                    ProcessTap(touch.position);
-                }
+                TapInput(touch.position);
+            }
+
+            if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                touchedParts.Clear();
             }
         }
 
-        // Handle mouse input (PC)
-        if (Input.GetMouseButtonDown(0)) // Left click
+        if (Input.GetMouseButtonDown(0))
         {
-            ProcessTap(Input.mousePosition);
+            TapInput(Input.mousePosition);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            touchedParts.Clear();
         }
     }
-
-    void ProcessTap(Vector2 screenPosition)
+    void TapInput(Vector2 screenPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
@@ -71,7 +77,9 @@ public class CalungSound : MonoBehaviour
         {
             for (int j = 0; j < calungParts.Length; j++)
             {
-                if (hit.collider.gameObject == calungParts[j].part && calungParts[j].sound != null)
+                GameObject partObject = calungParts[j].part;
+
+                if (hit.collider.gameObject == partObject && calungParts[j].sound != null && !touchedParts.Contains(partObject))
                 {
                     audioSource.PlayOneShot(calungParts[j].sound);
                     StartCoroutine(BrightnessEffect(calungParts[j]));
@@ -82,27 +90,26 @@ public class CalungSound : MonoBehaviour
     }
 
     IEnumerator BrightnessEffect(CalungPart calungPart)
-{
-    if (calungPart.partRenderer != null)
     {
-        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-        Renderer renderer = calungPart.partRenderer;
+        if (calungPart.partRenderer != null)
+        {
+            MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+            Renderer renderer = calungPart.partRenderer;
 
-        // Get the original color
-        renderer.GetPropertyBlock(propertyBlock);
-        Color originalColor = calungPart.originalMaterial.color;
+            renderer.GetPropertyBlock(propertyBlock);
+            Color originalColor = calungPart.originalMaterial.color;
 
-        Color brightColor = originalColor * brightnessMultiplier;
-        brightColor.a = originalColor.a;
+            Color brightColor = originalColor * brightnessMultiplier;
+            brightColor.a = originalColor.a;
 
-        propertyBlock.SetColor("_Color", brightColor);
-        renderer.SetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Color", brightColor);
+            renderer.SetPropertyBlock(propertyBlock);
 
-        yield return new WaitForSeconds(glowDuration);
+            yield return new WaitForSeconds(glowDuration);
 
-        propertyBlock.SetColor("_Color", originalColor);
-        renderer.SetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Color", originalColor);
+            renderer.SetPropertyBlock(propertyBlock);
+        }
     }
-}
 
 }

@@ -64,7 +64,6 @@ public class RotateObject : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            // ✅ Ignore rotation if touch is on a UI element
             if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
                 return;
 
