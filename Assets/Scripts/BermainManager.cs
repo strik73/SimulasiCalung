@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class BermainManger : MonoBehaviour
 {
     [System.Serializable]
@@ -19,9 +19,8 @@ public class BermainManger : MonoBehaviour
     public float glowDuration = 0.2f;
     public float brightnessMultiplier = 2f;
     public SongManager songManager;
-
-    public BermainMode bermainMode; // Reference to BermainMode
-
+    public BermainMode bermainMode;
+    private HashSet<GameObject> touchedParts = new HashSet<GameObject>();
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -42,28 +41,33 @@ public class BermainManger : MonoBehaviour
 
     void Update()
     {
-        if (songManager != null && songManager.isGameFrozen)
-            return;
-
         if (Input.touchCount > 0)
         {
-            for (int i = 0; i < Input.touchCount; i++)
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
             {
-                Touch touch = Input.GetTouch(i);
-                if (touch.phase == TouchPhase.Began)
-                {
-                    ProcessTap(touch.position);
-                }
+                TapInput(touch.position);
+            }
+
+            if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                touchedParts.Clear();
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            ProcessTap(Input.mousePosition);
+            TapInput(Input.mousePosition);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            touchedParts.Clear();
         }
     }
 
-    void ProcessTap(Vector2 screenPosition)
+    void TapInput(Vector2 screenPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
@@ -72,15 +76,19 @@ public class BermainManger : MonoBehaviour
         {
             for (int j = 0; j < calungParts.Length; j++)
             {
-                if (hit.collider.gameObject == calungParts[j].part && calungParts[j].sound != null)
+                GameObject partObject = calungParts[j].part;
+
+                if (hit.collider.gameObject == partObject && calungParts[j].sound != null && !touchedParts.Contains(partObject))
                 {
                     audioSource.PlayOneShot(calungParts[j].sound);
                     StartCoroutine(BrightnessEffect(calungParts[j]));
+                    touchedParts.Add(partObject);
 
                     if (bermainMode != null)
                     {
                         bermainMode.OnTap(j);
                     }
+
                     break;
                 }
             }
