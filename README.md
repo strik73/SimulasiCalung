@@ -5,5 +5,5 @@
 <ul>
 <li>The 3D model of Calung Jinjing is made by me personally using Blender</li>
 <li>For the other assets such as environments are from unity asset store<br>
-    Lite Farm Pack - Low Poly 3D Art by Gridness Studio <br></li>
+    <b>Lite Farm Pack - Low Poly 3D Art by Gridness Studio<b><br></li>
 </ul>
